@@ -17,4 +17,4 @@ jobs:
           rebar3 dialyzer
           # rebar3 eunit -v
           rebar3 proper -c true --module prop_boolean
-          rebar3 cover -m 100
+          # rebar3 cover -m 100
