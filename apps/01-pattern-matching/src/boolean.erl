@@ -9,8 +9,10 @@
 %% @spec b_not(Value :: boolean()) -> boolean()
 %% @end
 %%--------------------------------------------------------------------
-b_not(_Value) ->
-    erlang:throw(not_implemented).
+b_not(false) ->
+    true;
+b_not(_) ->
+    false.
 
 %%--------------------------------------------------------------------
 %% @doc Operator 'and'.
@@ -18,14 +20,21 @@ b_not(_Value) ->
 %%             Value2 :: boolean()) -> boolean()
 %% @end
 %%--------------------------------------------------------------------
-b_and(_Value1, _Value2) ->
-    erlang:throw(not_implemented).
 
+b_and(true,true) ->
+    true;
+b_and(_,_) ->
+    false.
 %%--------------------------------------------------------------------
 %% @doc Operator 'or'.
 %% @spec b_or(Value1 :: boolean(),
 %%            Value2 :: boolean()) -> boolean()
 %% @end
 %%--------------------------------------------------------------------
-b_or(_Value1, _Value2) ->
-    erlang:throw(not_implemented).
+
+b_or(true, _) ->
+    true;
+b_or(_, true) ->
+    true;
+b_or(_, _) ->
+    false.
