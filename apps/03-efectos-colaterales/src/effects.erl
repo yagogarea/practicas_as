@@ -11,7 +11,7 @@
 print(0) ->
     ok;
 print(N) when is_integer(N) andalso N > 0 ->
-    print(N, 1);
+    print(N, 1).
 
 %%--------------------------------------------------------------------
 %% @doc Even print function.
@@ -21,7 +21,7 @@ print(N) when is_integer(N) andalso N > 0 ->
 even_print(0) ->
     ok;
 even_print(N) when is_integer(N) andalso N > 0 ->
-    even_print(N, 2);
+    even_print(N, 2).
 
 %%%-----------------------------------------------------------------------------
 %%% INTERNAL FUNCTIONS
