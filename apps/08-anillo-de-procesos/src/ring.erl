@@ -10,11 +10,15 @@
 %% @end
 %%--------------------------------------------------------------------
 start(ProcNum, MsgNum, Message) ->
-    register(master,spawn(?MODULE, init, [ProcNum, MsgNum, Message, self()])),
+    register(master, spawn(?MODULE, init, [ProcNum, MsgNum, Message, self()])),
     receive
         ring_close ->
             ok
     end.
+
+%%%-----------------------------------------------------------------------------
+%%% INTERNAL FUNCTIONS
+%%%-----------------------------------------------------------------------------
     
 init(0, _MsgNum, _Message, _From)->
     ok;
