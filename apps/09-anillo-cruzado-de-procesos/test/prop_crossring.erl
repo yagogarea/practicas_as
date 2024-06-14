@@ -18,7 +18,6 @@
 % Xeradores de datos
 nprocs() ->
     integer(1, inf). % xerar números > 0 -> probas positivas
-
 nmsgs() ->
     integer(1, inf). % xerar números > 0 -> probas positivas
 
@@ -50,7 +49,7 @@ prop_ring() ->
 %% Sub-propiedades
 % (1) Comprobamos que se crean tantos procesos como se indica
 creacion(NProcs, Trazas) ->
-    ParentsAndChildren = [{Parent, Child} || {trace, Parent, spawn, Child, _Fun} <- Trazas],
+    ParentsAndChildren = [{Parent, Child} || {trace, Parent, spawn, Child, {crossring, _, _}} <- Trazas], 
     length(ParentsAndChildren) == NProcs.
 
 % (2) Comprobamos que se envía a mensaxe o número de veces axeitado
@@ -65,13 +64,15 @@ recepcion(NMsgs, Msg, Trazas) ->
 
 % (4) Comprobamos que se destrúen os procesos
 destruccion(NProcs, Trazas) ->
-    Stoppers = [{From, To} || {trace, From, send, stop, To} <- Trazas] ++
+    RingProcs = [Child || {trace, _Parent, spawn, Child, {crossring, _, _}} <- Trazas],
+    Stoppers = [{From, To} || {trace, From, send, stop, To} <- Trazas] ++ 
                [{From, To} || {trace, From, send_to_non_existing_process, stop, To} <- Trazas],
     Stopped =  [Who || {trace, Who, 'receive', stop} <- Trazas],
-    Exited =  [Who || {trace, Who, exit, normal} <- Trazas],
+    Exited =  [Who || {trace, Who, exit, normal} <- Trazas, lists:member(Who, RingProcs)],  
     (((length(Stoppers) == (NProcs+1)) orelse (length(Stoppers) == NProcs)) andalso
      ((length(Stopped) == (NProcs-1)) orelse (length(Stopped) == 1))        andalso
       (length(Exited) == NProcs)).
+
 
 % Outras posibles sub-propiedades:
 % (5) as parellas envío-recepción son correctas (circulares)
