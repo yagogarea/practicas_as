@@ -14,6 +14,9 @@ start(ProcNum, MsgNum, Message) ->
     register(cross, spawn(?MODULE, init_cross, [ProcNum - 1, MsgNum, Message, self()])),
     wait_procs(ProcNum).
 
+%%%-----------------------------------------------------------------------------
+%%% INTERNAL FUNCTIONS
+%%%-----------------------------------------------------------------------------
 
 init_cross(0, MsgNum, Message, From) -> 
     self() ! {MsgNum - 1, Message, none},
@@ -122,7 +125,6 @@ loop(Next, Cross, From) ->
             From ! close
     end.
 
-% Auxiliar functions
 
 rec_star(0) ->
     ok;
