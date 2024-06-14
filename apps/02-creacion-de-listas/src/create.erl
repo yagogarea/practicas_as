@@ -8,23 +8,18 @@
 %% @spec create(Value :: pos_integer()) -> [pos_integer()]
 %% @end
 %%--------------------------------------------------------------------
-create(N) when is_integer(N)->
-    create(N, []);
-create(_) ->
-    erlang:throw("NAN").
+create(N) ->
+    create(N, []).
 
 %%--------------------------------------------------------------------
 %% @doc Reverse create function.
 %% @spec reverse_create(Value :: pos_integer()) -> [pos_integer()]
 %% @end
 %%--------------------------------------------------------------------
-reverse_create(N) when is_integer(N)->
+reverse_create(N) ->
     List = create(N),
     RevList = rev_list(List, []),
-    RevList; 
-reverse_create(_) ->
-    erlang:throw("NAN").
-
+    RevList.
 
 %%%-----------------------------------------------------------------------------
 %%% INTERNAL FUNCTIONS
