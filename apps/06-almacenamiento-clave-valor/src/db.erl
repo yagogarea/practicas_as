@@ -17,7 +17,7 @@ new() ->
 %% @end
 %%--------------------------------------------------------------------
 write(Key, Element, DbRef) when is_list(DbRef) ->
-    [{Key, Element}|DbRef];
+    [{Key, Element} | DbRef];
 write(_, _, _) ->
     erlang:throw("error").
 
@@ -28,9 +28,9 @@ write(_, _, _) ->
 %%--------------------------------------------------------------------
 delete(_, []) ->
     [];
-delete(Key, [{Key, _}|T]) ->
+delete(Key, [{Key, _} | T]) ->
     T;
-delete(Key, [{X, Y}|T]) ->
+delete(Key, [{X, Y} | T]) ->
     [{X, Y}| delete(Key, T)];
 delete(_Key, _DbRef) ->
     erlang:throw("error").
@@ -43,9 +43,9 @@ delete(_Key, _DbRef) ->
 %%--------------------------------------------------------------------
 read(_, []) ->
     {error, instance};
-read(Key, [{Key, Element}|_]) ->
+read(Key, [{Key, Element} | _]) ->
     {ok, Element};
-read(Key, [_|T]) ->
+read(Key, [_ | T]) ->
     read(Key, T).
 
 %%--------------------------------------------------------------------
