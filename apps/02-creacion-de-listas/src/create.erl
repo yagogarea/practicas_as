@@ -8,7 +8,7 @@
 %% @spec create(Value :: pos_integer()) -> [pos_integer()]
 %% @end
 %%--------------------------------------------------------------------
-create(N) ->
+create(N) when is_integer(N) andalso N > 0 ->
     create(N, []).
 
 %%--------------------------------------------------------------------
@@ -16,7 +16,7 @@ create(N) ->
 %% @spec reverse_create(Value :: pos_integer()) -> [pos_integer()]
 %% @end
 %%--------------------------------------------------------------------
-reverse_create(N) ->
+reverse_create(N) when is_integer(N) andalso N > 0 ->
     List = create(N),
     RevList = rev_list(List, []),
     RevList.
