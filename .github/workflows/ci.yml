@@ -15,6 +15,15 @@ jobs:
       - name: Checks
         run: |
           rebar3 dialyzer
+<<<<<<< HEAD
           rebar3 eunit -v
           rebar3 proper -c true --module prop_boolean,prop_create,prop_manipulating,prop_sorting,prop_db
+=======
+          # rebar3 eunit -v
+<<<<<<< HEAD
+          rebar3 proper -c true --module prop_boolean,prop_create,prop_manipulating,prop_sorting
+=======
+          rebar3 proper -c true --module prop_boolean,prop_echo.erl,prop_positive_echo
+>>>>>>> 3485eff (fix: pr comments)
+>>>>>>> 662e4b0 (fix: pr comments)
           # rebar3 cover -m 100

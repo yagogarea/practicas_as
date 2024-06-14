@@ -19,7 +19,7 @@ start() ->
 %% @end
 %%--------------------------------------------------------------------
 stop() ->
-    ?MODULE !{stop, self()},
+    ?MODULE ! {stop, self()},
     receive
         stopped ->
             ok
