@@ -31,6 +31,7 @@ print(0, _) ->
 print(N, Acc)->
     io:format("~w", [Acc]),
     print(N - 1, Acc + 1).
+
 even_print(N, _) when N =< 2 ->
     ok;
 even_print(N, Acc) ->
