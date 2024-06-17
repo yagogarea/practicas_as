@@ -47,11 +47,11 @@ flatten(List) ->
 aux([], Acc) ->
     Acc;
 aux([H | T], Acc) ->
-        aux(T, [H | Acc]).
+    aux(T, [H | Acc]).
 
 
 concatenate([], Acc) ->
-        Acc;
+    Acc;
 concatenate([H | T], Acc) when is_list(H)->
     concatenate(T, aux(H, Acc));
 concatenate(_ListOfLists, _) ->
@@ -59,11 +59,11 @@ concatenate(_ListOfLists, _) ->
 
 
 filter([], _N, Acc) ->
-    Acc;
+    reverse(Acc);
 filter([H | T], N, Acc) when H > N ->
     filter(T, N, Acc);
 filter([H | T], N, Acc) ->
-    filter(T, N, Acc ++ [H]).
+    filter(T, N, [H | Acc]).
 
 
 flatten([], Acc) ->
