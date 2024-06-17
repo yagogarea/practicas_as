@@ -8,8 +8,6 @@
 %% @spec print(N :: pos_integer()) -> ok
 %% @end
 %%--------------------------------------------------------------------
-print(0) ->
-    ok;
 print(N) when is_integer(N) andalso N > 0 ->
     print(N, 1).
 
@@ -18,8 +16,6 @@ print(N) when is_integer(N) andalso N > 0 ->
 %% @spec even_print(N :: pos_integer()) -> ok
 %% @end
 %%--------------------------------------------------------------------
-even_print(0) ->
-    ok;
 even_print(N) when is_integer(N) andalso N > 0 ->
     even_print(N, 2).
 
