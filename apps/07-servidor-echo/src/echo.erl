@@ -38,7 +38,7 @@ print(Term) ->
 loop() ->
     receive
         {print, Term} ->
-            io:format("~p~n",[Term]),
+            io:format("~p~n", [Term]),
             loop();
         {stop, From} ->
             From ! stopped;
