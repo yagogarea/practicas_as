@@ -30,9 +30,9 @@ print(0, _) ->
     ok;
 print(N, Acc)->
     io:format("~w", [Acc]),
-    print(N-1, Acc+1).
+    print(N - 1, Acc + 1).
 even_print(N, _) when N =< 2 ->
     ok;
 even_print(N, Acc) ->
     io:format("~w", [Acc]),
-    even_print(N-2, Acc+2).
+    even_print(N - 2, Acc + 2).
