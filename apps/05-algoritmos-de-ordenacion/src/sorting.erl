@@ -28,7 +28,7 @@ quicksort(_NotAList) ->
 mergesort([]) ->
     [];
 mergesort([X]) ->
-    quicksort([X]);
+    [X];
 mergesort([X1, X2]) ->
     quicksort([X1, X2]);
 mergesort(List) when is_list(List) ->
