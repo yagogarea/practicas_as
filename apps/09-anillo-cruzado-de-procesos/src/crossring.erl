@@ -2,7 +2,7 @@
 
 % Public API
 -export([start/3]).
--export([init/5, init_cross/4, loop/3, loop_cross/3, rec_start/1]).
+-export([init/3, init_cross/4, loop/3, loop_cross/3, rec_start/1]).
 
 %%--------------------------------------------------------------------
 %% @doc Start function.
@@ -18,6 +18,20 @@ start(ProcNum, MsgNum, Message) ->
 %%% INTERNAL FUNCTIONS
 %%%-----------------------------------------------------------------------------
 
+create_rings(0, 1, MsgNum, Message, From) -> 
+    Next = spawn(?MODULE, init, [0, self(), From]),
+    rec_start(1),
+    Next ! {MsgNum - 1, Message, one},
+    io:format("~p~n", [Message]),
+    loop_cross(Next, one, From);
+create_rings(P1, P2, MsgNum, Message, From) ->
+    Next = spawn(?MODULE, init, [P1 - 1, self(), From]),
+    Next2 = spawn(?MODULE, init, [P2 - 1, self(), From]),
+    rec_start(2),
+    Next ! {MsgNum - 1, Message, first},
+    io:format("~p~n", [Message]),
+    loop_cross(Next, Next2, From).
+
 init_cross(0, MsgNum, Message, From) -> 
     self() ! {MsgNum - 1, Message, none},
     io:format("~p~n", [Message]),
@@ -27,26 +41,13 @@ init_cross(ProcNum, MsgNum, Message, From) ->
     P2 = ProcNum - P1,
     create_rings(P1, P2, MsgNum, Message, From).
 
-create_rings(0, 1, MsgNum, Message, From) -> 
-    Next = spawn(?MODULE, init, [0, MsgNum, Message, self(), From]),
-    rec_start(1),
-    Next ! {MsgNum - 1, Message, one},
-    io:format("~p~n", [Message]),
-    loop_cross(Next, one, From);
-create_rings(P1, P2, MsgNum, Message, From) ->
-    Next = spawn(?MODULE, init, [P1 - 1, MsgNum, Message, self(), From]),
-    Next2 = spawn(?MODULE, init, [P2 - 1, MsgNum, Message, self(), From]),
-    rec_start(2),
-    Next ! {MsgNum - 1, Message, first},
-    io:format("~p~n", [Message]),
-    loop_cross(Next, Next2, From).
-
-init(0, _MsgNum, _Message, Cross, From) ->
+init(0, Cross, From) ->
     Cross ! readyone,
     loop(Cross, Cross, From);
-init(ProcNum, MsgNum, Message, Cross, From) ->
-    Next = spawn(?MODULE, init, [ProcNum - 1, MsgNum, Message, Cross, From]), 
+init(ProcNum, Cross, From) ->
+    Next = spawn(?MODULE, init, [ProcNum - 1, Cross, From]), 
     loop(Next, Cross, From).
+
 
 loop_cross(Cross, none, From) -> % 1 proc
     receive
