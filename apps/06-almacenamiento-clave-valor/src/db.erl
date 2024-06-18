@@ -66,4 +66,4 @@ match(_Key, _DbRef) ->
 destroy(DbRef) when is_list(DbRef)->
     [];
 destroy(_DbRef) ->
-    erlang:throw("not a list").
+    erlang:throw("error").
