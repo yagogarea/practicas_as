@@ -9,7 +9,6 @@
 %% @spec start(ProcNum :: pos_integer(), MsgNum :: pos_integer(), Message :: term()) -> ok
 %% @end
 %%--------------------------------------------------------------------
-
 start(ProcNum, MsgNum, Message) ->
     register(cross, spawn(?MODULE, init_cross, [ProcNum - 1, MsgNum, Message, self()])),
     wait_procs(ProcNum).
@@ -17,7 +16,6 @@ start(ProcNum, MsgNum, Message) ->
 %%%-----------------------------------------------------------------------------
 %%% INTERNAL FUNCTIONS
 %%%-----------------------------------------------------------------------------
-
 create_rings(0, 1, MsgNum, Message, From) -> 
     Next = spawn(?MODULE, init, [0, self(), From]),
     rec_start(1),
@@ -47,7 +45,6 @@ init(0, Cross, From) ->
 init(ProcNum, Cross, From) ->
     Next = spawn(?MODULE, init, [ProcNum - 1, Cross, From]), 
     loop(Next, Cross, From).
-
 
 loop_cross(Cross, none, From) -> % 1 proc
     receive
