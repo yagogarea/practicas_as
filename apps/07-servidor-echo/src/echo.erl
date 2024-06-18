@@ -2,6 +2,7 @@
 
 % Public API
 -export([start/0, stop/0, print/1]).
+
 -export([loop/0]).
 
 %%--------------------------------------------------------------------
@@ -34,7 +35,9 @@ print(Term) ->
     ?MODULE ! {print, Term},
     ok.
 
-
+%%%-------------------------------------------------------------------
+%%% EXTERNAL EXPORTS
+%%%-------------------------------------------------------------------
 loop() ->
     receive
         {print, Term} ->
@@ -42,7 +45,4 @@ loop() ->
             loop();
         {stop, From} ->
             From ! stopped;
-        _ ->
-            erlang:throw("error")
     end.
-
