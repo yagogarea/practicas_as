@@ -16,10 +16,8 @@ new() ->
 %% @spec write(Key :: integer, Element :: term(), DbRef :: term()) -> term()
 %% @end
 %%--------------------------------------------------------------------
-write(Key, Element, DbRef) when is_list(DbRef) ->
-    [{Key, Element} | DbRef];
-write(_, _, _) ->
-    erlang:throw("error").
+write(Key, Element, DbRef) when is_list(DbRef) andalso is_integer(Key) ->
+    [{Key, Element} | DbRef].
 
 %%--------------------------------------------------------------------
 %% @doc Delete function.
@@ -28,12 +26,10 @@ write(_, _, _) ->
 %%--------------------------------------------------------------------
 delete(_, []) ->
     [];
-delete(Key, [{Key, _} | T]) ->
+delete(Key, [{Key, _} | T]) when is_integer(Key) ->
     T;
-delete(Key, [{X, Y} | T]) ->
-    [{X, Y}| delete(Key, T)];
-delete(_Key, _DbRef) ->
-    erlang:throw("error").
+delete(Key, [{X, Y} | T]) when is_integer(Key) ->
+    [{X, Y}| delete(Key, T)].
 
 %%--------------------------------------------------------------------
 %% @doc Read function.
@@ -43,9 +39,9 @@ delete(_Key, _DbRef) ->
 %%--------------------------------------------------------------------
 read(_, []) ->
     {error, instance};
-read(Key, [{Key, Element} | _]) ->
+read(Key, [{Key, Element} | _]) when is_integer(Key) ->
     {ok, Element};
-read(Key, [_ | T]) ->
+read(Key, [_ | T]) when is_integer(Key) ->
     read(Key, T).
 
 %%--------------------------------------------------------------------
@@ -54,9 +50,7 @@ read(Key, [_ | T]) ->
 %% @end
 %%--------------------------------------------------------------------
 match(Element, DbRef) when is_list(DbRef) ->
-    [X || {X, E} <- DbRef, E =:= Element];
-match(_Key, _DbRef) ->
-    erlang:throw("error").
+    [X || {X, E} <- DbRef, E =:= Element].
 
 %%--------------------------------------------------------------------
 %% @doc Destroy function.
@@ -64,6 +58,4 @@ match(_Key, _DbRef) ->
 %% @end
 %%--------------------------------------------------------------------
 destroy(DbRef) when is_list(DbRef)->
-    [];
-destroy(_DbRef) ->
-    erlang:throw("error").
+    ok.
