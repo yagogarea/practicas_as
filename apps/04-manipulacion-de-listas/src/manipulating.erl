@@ -9,17 +9,7 @@
 %% @end
 %%--------------------------------------------------------------------
 filter(List, N) when is_integer(N) ->
-    filter(List, N, []);
-filter(_List, _N) ->
-    erlang:throw("NAN").
-
-filter([], _N, Acc) ->
-    Acc;
-filter([H|T], N, Acc) when H > N ->
-    filter(T, N, Acc);
-filter([H|T], N, Acc) ->
-    filter(T, N, Acc ++ [H]).
-
+    filter(List, N, []).
 
 %%--------------------------------------------------------------------
 %% @doc Reverse function.
@@ -28,12 +18,6 @@ filter([H|T], N, Acc) ->
 %%--------------------------------------------------------------------
 reverse(List) ->
     reverse(List, []).
-reverse([], Acc) ->
-    Acc;
-reverse([H|T], Acc) ->
-   reverse(T, [H|Acc]);
-reverse(_, _) ->
-    erlang:throw("Not a list").
 
 %%--------------------------------------------------------------------
 %% @doc Concatenate function.
@@ -43,35 +27,44 @@ reverse(_, _) ->
 concatenate(List)->
     Result = concatenate(List, []),
     reverse(Result).
-
-concatenate([], Acc) ->
-        Acc;
-concatenate([H|T], Acc) when is_list(H)->
-    concatenate(T, aux(H, Acc));
-concatenate(_ListOfLists, _) ->
-    erlang:throw("Not a list of lists").
-
-aux([], Acc) ->
-    Acc;
-aux([H|T], Acc) ->
-        aux(T, [H|Acc]).
         
 %%--------------------------------------------------------------------
 %% @doc Flatten function.
 %% @spec flatten(DeepList :: [integer() | list()]) -> [integer()]
 %% @end
 %%--------------------------------------------------------------------
-
 flatten(List) ->
     Result = flatten(List, []),
     reverse(Result).
 
+%%%-----------------------------------------------------------------------------
+%%% INTERNAL FUNCTIONS
+%%%-----------------------------------------------------------------------------
+aux([], Acc) ->
+    Acc;
+aux([H | T], Acc) ->
+    aux(T, [H | Acc]).
+
+concatenate([], Acc) ->
+    Acc;
+concatenate([H | T], Acc) when is_list(H)->
+    concatenate(T, aux(H, Acc)).
+
+filter([], _N, Acc) ->
+    reverse(Acc);
+filter([H | T], N, Acc) when H > N ->
+    filter(T, N, Acc);
+filter([H | T], N, Acc) ->
+    filter(T, N, [H | Acc]).
+
 flatten([], Acc) ->
     Acc;
-flatten([H|T], Acc) when is_list(H)->
+flatten([H | T], Acc) when is_list(H)->
     flatten(T, flatten(H, Acc));
-flatten([H|T], Acc) ->
-    flatten(T, [H|Acc]);
-flatten(_List, _) ->
-    erlang:throw("Not a list").
+flatten([H | T], Acc) ->
+    flatten(T, [H | Acc]).
 
+reverse([], Acc) ->
+    Acc;
+reverse([H | T], Acc) ->
+   reverse(T, [H | Acc]).
