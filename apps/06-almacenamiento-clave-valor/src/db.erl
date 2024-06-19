@@ -28,8 +28,8 @@ delete(_, []) ->
     [];
 delete(Key, [{Key, _} | T]) when is_integer(Key) ->
     T;
-delete(Key, [{X, Y} | T]) when is_integer(Key) ->
-    [{X, Y}| delete(Key, T)].
+delete(Key, [H | T]) when is_integer(Key) ->
+    [H | delete(Key, T)].
 
 %%--------------------------------------------------------------------
 %% @doc Read function.
