@@ -44,5 +44,5 @@ loop() ->
             io:format("~p~n", [Term]),
             loop();
         {stop, From} ->
-            From ! stopped;
+            From ! stopped
     end.
