@@ -9,23 +9,27 @@
 %% @end
 %%--------------------------------------------------------------------
 new() ->
-    erlang:throw(not_implemented).
+    [].
 
 %%--------------------------------------------------------------------
 %% @doc Write function.
 %% @spec write(Key :: integer, Element :: term(), DbRef :: term()) -> term()
 %% @end
 %%--------------------------------------------------------------------
-write(_Key, _Element, _DbRef) ->
-    erlang:throw(not_implemented).
+write(Key, Element, DbRef) when is_list(DbRef) andalso is_integer(Key) ->
+    [{Key, Element} | DbRef].
 
 %%--------------------------------------------------------------------
 %% @doc Delete function.
 %% @spec delete(Key :: integer, DbRef :: term()) -> term()
 %% @end
 %%--------------------------------------------------------------------
-delete(_Key, _DbRef) ->
-    erlang:throw(not_implemented).
+delete(_, []) ->
+    [];
+delete(Key, [{Key, _} | T]) when is_integer(Key) ->
+    T;
+delete(Key, [H | T]) when is_integer(Key) ->
+    [H | delete(Key, T)].
 
 %%--------------------------------------------------------------------
 %% @doc Read function.
@@ -33,21 +37,25 @@ delete(_Key, _DbRef) ->
 %% | {error, instance}
 %% @end
 %%--------------------------------------------------------------------
-read(_Key, _DbRef) ->
-    erlang:throw(not_implemented).
+read(_, []) ->
+    {error, instance};
+read(Key, [{Key, Element} | _]) when is_integer(Key) ->
+    {ok, Element};
+read(Key, [_ | T]) when is_integer(Key) ->
+    read(Key, T).
 
 %%--------------------------------------------------------------------
 %% @doc Match function.
 %% @spec match(Element :: term(), DbRef :: term()) -> [integer()]
 %% @end
 %%--------------------------------------------------------------------
-match(_Key, _DbRef) ->
-    erlang:throw(not_implemented).
+match(Element, DbRef) when is_list(DbRef) ->
+    [X || {X, E} <- DbRef, E =:= Element].
 
 %%--------------------------------------------------------------------
 %% @doc Destroy function.
 %% @spec destroy(DbRef :: term()) -> ok
 %% @end
 %%--------------------------------------------------------------------
-destroy(_DbRef) ->
-    erlang:throw(not_implemented).
+destroy(DbRef) when is_list(DbRef)->
+    ok.
