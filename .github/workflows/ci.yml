@@ -21,9 +21,16 @@ jobs:
 =======
           # rebar3 eunit -v
 <<<<<<< HEAD
+<<<<<<< HEAD
           rebar3 proper -c true --module prop_boolean,prop_create,prop_manipulating,prop_sorting
 =======
           rebar3 proper -c true --module prop_boolean,prop_echo.erl,prop_positive_echo
 >>>>>>> 3485eff (fix: pr comments)
+<<<<<<< HEAD
 >>>>>>> 662e4b0 (fix: pr comments)
+=======
+=======
+          rebar3 proper -c true --module prop_boolean,prop_echo,prop_positive_echo
+>>>>>>> d46cb9e (fix: ci typo)
+>>>>>>> 97446cf (fix: ci typo)
           # rebar3 cover -m 100
