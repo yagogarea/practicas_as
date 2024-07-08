@@ -49,7 +49,7 @@ prop_ring() ->
 %% Sub-propiedades
 % (1) Comprobamos que se crean tantos procesos como se indica
 creacion(NProcs, Trazas) ->
-    ParentsAndChildren = [{Parent, Child} || {trace, Parent, spawn, Child, _Fun} <- Trazas],
+    ParentsAndChildren = [{Parent, Child} || {trace, Parent, spawn, Child, {ring, _, _}} <- Trazas],
     length(ParentsAndChildren) == NProcs.
 
 % (2) Comprobamos que se envía a mensaxe o número de veces axeitado
@@ -64,9 +64,10 @@ recepcion(NMsgs, Msg, Trazas) ->
 
 % (4) Comprobamos que se destrúen os procesos
 destruccion(NProcs, Trazas) ->
+    RingProcs = [Child || {trace, _Parent, spawn, Child, {ring, _, _}} <- Trazas],
     Stoppers = [{From, To} || {trace, From, send, stop, To} <- Trazas],
     Stopped =  [Who || {trace, Who, 'receive', stop} <- Trazas],
-    Exited =  [Who || {trace, Who, exit, normal} <- Trazas],
+    Exited =  [Who || {trace, Who, exit, normal} <- Trazas, lists:member(Who, RingProcs)],
     (length(Stoppers) == length(Stopped)) andalso (length(Exited) == NProcs).
 
 % Outras posibles sub-propiedades:
